@@ -19,7 +19,6 @@ export default function Hero() {
       <div className="relative z-10 max-w-lg mx-auto text-center">
         {/* Badge */}
         <motion.div {...fadeUp(0)} className="inline-flex items-center gap-2 border border-[#00B4D8]/30 bg-[#00B4D8]/5 text-[#90E0EF] text-[11px] font-semibold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00B4D8] animate-pulse shrink-0" />
           Si estás listo/a para dejar las excusas y seguir un plan real, este es tu lugar
         </motion.div>
 
@@ -28,8 +27,8 @@ export default function Hero() {
           {...fadeUp(0.08)}
           className="text-[2.15rem] sm:text-5xl font-extrabold leading-[1.12] tracking-tight mb-4"
         >
-          Entrena con Estrategia,{" "}
-          <span className="text-[#00B4D8]">deja el Estancamiento Atrás</span>
+          Entrena con estrategia,{" "}
+          <span className="text-[#00B4D8]">deja el estancamiento atrás</span>
         </motion.h1>
 
         {/* Subtítulo */}
