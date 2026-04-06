@@ -1,0 +1,194 @@
+"use client";
+
+import { useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { motion } from "framer-motion";
+
+interface FormValues {
+  nombre: string;
+  whatsapp: string;
+  objetivo: string;
+}
+
+const objetivos = [
+  "Ganar músculo",
+  "Perder grasa",
+  "Recomposición corporal",
+  "Mejorar mi alimentación",
+  "Mejorar mi rendimiento deportivo",
+  "Otro",
+];
+
+export default function Contacto() {
+  const [enviado, setEnviado] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>();
+
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    const body = `Nombre: ${data.nombre}%0AWhatsApp: ${data.whatsapp}%0AObjetivo: ${data.objetivo}`;
+    window.location.href = `mailto:joe@joecoachinglab.com?subject=Quiero empezar mi plan — ${data.objetivo}&body=${body}`;
+    setEnviado(true);
+  };
+
+  return (
+    <section id="contacto" className="py-16 bg-[#0a0a0a] px-4">
+      <div className="max-w-lg mx-auto">
+        {/* Encabezado */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const }}
+          className="mb-8"
+        >
+          <p className="text-[#00B4D8] text-[11px] font-bold tracking-widest uppercase mb-3">
+            Da el primer paso
+          </p>
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight mb-3">
+            ¿Listo para
+            <br />
+            <span className="text-[#00B4D8]">transformarte?</span>
+          </h2>
+          <p className="text-white/50 text-[14px] leading-relaxed">
+            Déjame tus datos y me pongo en contacto contigo en menos de 24h
+            para hablar de tu plan.
+          </p>
+        </motion.div>
+
+        {/* Formulario o confirmación */}
+        {enviado ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.35 }}
+            className="text-center py-14 px-6 rounded-2xl border border-[#00B4D8]/20 bg-[#00B4D8]/5"
+          >
+            <div className="text-5xl mb-4">🎉</div>
+            <h3 className="text-xl font-bold text-white mb-2">
+              ¡Mensaje recibido!
+            </h3>
+            <p className="text-white/50 text-sm">
+              Te escribo en menos de 24h. Prepárate para empezar.
+            </p>
+          </motion.div>
+        ) : (
+          <motion.form
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const, delay: 0.08 }}
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            className="space-y-4"
+          >
+            {/* Nombre */}
+            <div>
+              <label
+                htmlFor="nombre"
+                className="block text-[13px] font-semibold text-white/65 mb-1.5"
+              >
+                Nombre <span className="text-[#00B4D8]">*</span>
+              </label>
+              <input
+                id="nombre"
+                type="text"
+                placeholder="¿Cómo te llamas?"
+                autoComplete="given-name"
+                {...register("nombre", { required: "El nombre es obligatorio" })}
+                className="w-full bg-white/5 border border-white/10 focus:border-[#00B4D8] text-white text-[15px] placeholder-white/20 rounded-xl px-4 py-3.5 outline-none transition-colors duration-200"
+              />
+              {errors.nombre && (
+                <p className="mt-1 text-[12px] text-red-400">{errors.nombre.message}</p>
+              )}
+            </div>
+
+            {/* WhatsApp */}
+            <div>
+              <label
+                htmlFor="whatsapp"
+                className="block text-[13px] font-semibold text-white/65 mb-1.5"
+              >
+                WhatsApp <span className="text-[#00B4D8]">*</span>
+              </label>
+              <input
+                id="whatsapp"
+                type="tel"
+                placeholder="+34 600 000 000"
+                autoComplete="tel"
+                {...register("whatsapp", {
+                  required: "El WhatsApp es obligatorio",
+                })}
+                className="w-full bg-white/5 border border-white/10 focus:border-[#00B4D8] text-white text-[15px] placeholder-white/20 rounded-xl px-4 py-3.5 outline-none transition-colors duration-200"
+              />
+              {errors.whatsapp && (
+                <p className="mt-1 text-[12px] text-red-400">{errors.whatsapp.message}</p>
+              )}
+            </div>
+
+            {/* Objetivo */}
+            <div>
+              <label
+                htmlFor="objetivo"
+                className="block text-[13px] font-semibold text-white/65 mb-1.5"
+              >
+                ¿Cuál es tu objetivo? <span className="text-[#00B4D8]">*</span>
+              </label>
+              <div className="relative">
+                <select
+                  id="objetivo"
+                  {...register("objetivo", { required: "Elige un objetivo" })}
+                  defaultValue=""
+                  className="w-full appearance-none bg-white/5 border border-white/10 focus:border-[#00B4D8] text-white text-[15px] rounded-xl px-4 py-3.5 outline-none transition-colors duration-200 cursor-pointer"
+                >
+                  <option value="" disabled className="bg-[#111827] text-white/40">
+                    Selecciona una opción
+                  </option>
+                  {objetivos.map((obj) => (
+                    <option key={obj} value={obj} className="bg-[#111827] text-white">
+                      {obj}
+                    </option>
+                  ))}
+                </select>
+                {/* Flecha del select */}
+                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
+                  <svg
+                    className="w-4 h-4 text-white/40"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </div>
+              </div>
+              {errors.objetivo && (
+                <p className="mt-1 text-[12px] text-red-400">{errors.objetivo.message}</p>
+              )}
+            </div>
+
+            {/* Botón */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-[#00B4D8] hover:bg-[#0077B6] active:bg-[#005f8c] disabled:opacity-60 text-[#0a0a0a] font-bold text-[15px] py-4 rounded-xl transition-colors duration-200 shadow-lg shadow-[#00B4D8]/20 mt-2"
+            >
+              {isSubmitting ? "Enviando..." : "Enviar y empezar mi plan"}
+            </button>
+
+            <p className="text-center text-white/25 text-[12px]">
+              Sin spam. Solo te contacto para hablar de tu plan.
+            </p>
+          </motion.form>
+        )}
+      </div>
+    </section>
+  );
+}
