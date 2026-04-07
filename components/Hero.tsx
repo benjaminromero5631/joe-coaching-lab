@@ -1,6 +1,12 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import VideoModal from "@/components/VideoModal";
+
+const VIDEO_URL =
+  "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0";
+const LS_KEY = "jcl_lead";
 
 function fadeUp(delay: number) {
   return {
@@ -11,6 +17,33 @@ function fadeUp(delay: number) {
 }
 
 export default function Hero() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [videoEmbedded, setVideoEmbedded] = useState(false);
+
+  // Si ya dejó datos antes, mostramos el video directamente al hacer clic
+  const hasLead = () => {
+    if (typeof window === "undefined") return false;
+    return !!localStorage.getItem(LS_KEY);
+  };
+
+  // Comprobar en mount por si el usuario ya rellenó el form en otra visita
+  useEffect(() => {
+    // No auto-embed: el video solo se muestra tras hacer clic
+  }, []);
+
+  const handleVideoClick = () => {
+    if (hasLead()) {
+      setVideoEmbedded(true);
+    } else {
+      setModalOpen(true);
+    }
+  };
+
+  const handleModalSuccess = () => {
+    setModalOpen(false);
+    setVideoEmbedded(true);
+  };
+
   return (
     <section className="relative bg-[#0a0a0a] pt-20 pb-14 px-4 overflow-hidden">
       {/* Glow de fondo */}
@@ -18,7 +51,11 @@ export default function Hero() {
 
       <div className="relative z-10 max-w-lg mx-auto text-center">
         {/* Badge */}
-        <motion.div {...fadeUp(0)} className="inline-flex items-center gap-2 border border-[#00B4D8]/30 bg-[#00B4D8]/5 text-[#90E0EF] text-[11px] font-semibold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
+        <motion.div
+          {...fadeUp(0)}
+          className="inline-flex items-center gap-2 border border-[#00B4D8]/30 bg-[#00B4D8]/5 text-[#90E0EF] text-[10px] font-bold tracking-[0.1em] uppercase px-4 py-2 rounded-full mb-6"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00B4D8] flex-shrink-0 animate-pulse" />
           Si estás listo/a para dejar las excusas y seguir un plan real, este es tu lugar
         </motion.div>
 
@@ -36,34 +73,48 @@ export default function Hero() {
           {...fadeUp(0.16)}
           className="text-base sm:text-xl text-white/90 leading-relaxed mb-8"
         >
-          Pierde grasa, gana músculo y construye un cuerpo que realmente refleje tu esfuerzo.
+          Pierde grasa, gana músculo y construye un cuerpo que realmente refleje
+          tu esfuerzo.
         </motion.p>
 
-        {/* Video placeholder */}
-        <motion.div
-          {...fadeUp(0.24)}
-          className="relative w-full aspect-video rounded-2xl overflow-hidden bg-[#111827] border border-white/8 mb-8 shadow-2xl shadow-black/40"
-        >
-          {/*
-            PARA INSERTAR TU VIDEO:
-            Opción A – video propio:
-              <video src="/tu-video.mp4" poster="/poster.jpg" controls className="w-full h-full object-cover" />
-            Opción B – YouTube embed:
-              <iframe src="https://www.youtube.com/embed/TU_ID" allow="autoplay" allowFullScreen className="w-full h-full" />
-          */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-            <div className="w-16 h-16 rounded-full bg-[#00B4D8]/15 border border-[#00B4D8]/30 flex items-center justify-center">
-              <svg
-                className="w-7 h-7 text-[#00B4D8] ml-1"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
+        {/* Video */}
+        <motion.div {...fadeUp(0.24)} className="mb-8">
+          {videoEmbedded ? (
+            /* Embed de YouTube una vez desbloqueado */
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/8 shadow-2xl shadow-black/40">
+              <iframe
+                src={VIDEO_URL}
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                title="Video Joe Coaching Lab"
+                className="absolute inset-0 w-full h-full border-none"
+              />
             </div>
-            <p className="text-white/30 text-xs tracking-wide">Tu video aquí</p>
-          </div>
+          ) : (
+            /* Placeholder clickable */
+            <button
+              type="button"
+              onClick={handleVideoClick}
+              className="relative w-full aspect-video rounded-2xl overflow-hidden bg-[#111827] border border-white/8 shadow-2xl shadow-black/40 cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B4D8]"
+              aria-label="Ver el video"
+            >
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                <div className="w-16 h-16 rounded-full bg-[#00B4D8]/15 border border-[#00B4D8]/30 flex items-center justify-center group-hover:bg-[#00B4D8]/28 group-hover:border-[#00B4D8]/60 transition-colors duration-200">
+                  <svg
+                    className="w-7 h-7 text-[#00B4D8] ml-1"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+                <p className="text-white/30 text-xs tracking-wide">
+                  Tu video aquí
+                </p>
+              </div>
+            </button>
+          )}
         </motion.div>
 
         {/* CTA */}
@@ -91,6 +142,13 @@ export default function Hero() {
 
       {/* Gradiente inferior */}
       <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
+
+      {/* Modal de captura de leads */}
+      <VideoModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSuccess={handleModalSuccess}
+      />
     </section>
   );
 }
