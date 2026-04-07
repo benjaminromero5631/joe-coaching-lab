@@ -112,6 +112,15 @@ export default function Plan() {
             Empezar ahora
           </a>
         </motion.div>
+
+        {/* Separador de marca */}
+        <div className="mt-14 flex items-center gap-4">
+          <div className="flex-1 h-px bg-white/6" />
+          <span className="text-[10px] font-semibold tracking-[0.18em] uppercase text-white/18 select-none whitespace-nowrap">
+            Joe Coaching Lab
+          </span>
+          <div className="flex-1 h-px bg-white/6" />
+        </div>
       </div>
     </section>
   );

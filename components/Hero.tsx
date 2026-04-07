@@ -118,7 +118,7 @@ export default function Hero() {
         </motion.div>
 
         {/* CTA */}
-        <motion.div {...fadeUp(0.32)}>
+        <motion.div {...fadeUp(0.32)} className="flex flex-col items-center gap-4">
           <a
             href="#contacto"
             className="inline-flex items-center gap-2 bg-[#00B4D8] hover:bg-[#0077B6] active:bg-[#005f8c] text-[#0a0a0a] font-bold text-sm px-7 py-3 rounded-full transition-colors duration-200 shadow-lg shadow-[#00B4D8]/25"
@@ -137,6 +137,10 @@ export default function Hero() {
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </a>
+          {/* Sello de marca minimal */}
+          <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-white/18 select-none">
+            Joe Coaching Lab
+          </p>
         </motion.div>
       </div>
 

@@ -196,6 +196,11 @@ export default function Contacto() {
             <p className="text-center text-white/25 text-[12px]">
               Sin spam. Solo te contacto para hablar de tu plan.
             </p>
+
+            {/* Sello de marca */}
+            <p className="text-center text-[10px] font-semibold tracking-[0.18em] uppercase text-white/14 select-none pt-2">
+              Joe Coaching Lab
+            </p>
           </motion.form>
         )}
       </div>
