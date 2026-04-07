@@ -7,17 +7,7 @@ import { motion } from "framer-motion";
 interface FormValues {
   nombre: string;
   whatsapp: string;
-  objetivo: string;
 }
-
-const objetivos = [
-  "Ganar músculo",
-  "Perder grasa",
-  "Recomposición corporal",
-  "Mejorar mi alimentación",
-  "Mejorar mi rendimiento deportivo",
-  "Otro",
-];
 
 export default function Contacto() {
   const [enviado, setEnviado] = useState(false);
@@ -29,8 +19,8 @@ export default function Contacto() {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    const body = `Nombre: ${data.nombre}%0AWhatsApp: ${data.whatsapp}%0AObjetivo: ${data.objetivo}`;
-    window.location.href = `mailto:joe@joecoachinglab.com?subject=Quiero empezar mi plan — ${encodeURIComponent(data.objetivo)}&body=${body}`;
+    const body = `Nombre: ${data.nombre}%0AWhatsApp: ${data.whatsapp}`;
+    window.location.href = `mailto:joe@joecoachinglab.com?subject=Quiero empezar mi plan&body=${body}`;
     setEnviado(true);
   };
 
@@ -133,53 +123,6 @@ export default function Contacto() {
               {errors.whatsapp && (
                 <p className="mt-1 text-[12px] text-red-400">
                   {errors.whatsapp.message}
-                </p>
-              )}
-            </div>
-
-            {/* Objetivo */}
-            <div>
-              <label
-                htmlFor="objetivo"
-                className="block text-[13px] font-semibold text-white/65 mb-1.5"
-              >
-                ¿Cuál es tu objetivo? <span className="text-[#00B4D8]">*</span>
-              </label>
-              <div className="relative">
-                <select
-                  id="objetivo"
-                  {...register("objetivo", {
-                    required: "Selecciona un objetivo",
-                  })}
-                  defaultValue=""
-                  className="w-full appearance-none bg-white/5 border border-white/10 focus:border-[#00B4D8] text-white text-[15px] rounded-xl px-4 py-3.5 outline-none transition-colors duration-200 cursor-pointer"
-                >
-                  <option value="" disabled className="bg-[#111] text-white/40">
-                    Selecciona una opción
-                  </option>
-                  {objetivos.map((o) => (
-                    <option key={o} value={o} className="bg-[#111] text-white">
-                      {o}
-                    </option>
-                  ))}
-                </select>
-                {/* Chevron */}
-                <svg
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </div>
-              {errors.objetivo && (
-                <p className="mt-1 text-[12px] text-red-400">
-                  {errors.objetivo.message}
                 </p>
               )}
             </div>

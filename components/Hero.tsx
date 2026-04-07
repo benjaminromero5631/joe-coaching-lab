@@ -55,7 +55,6 @@ export default function Hero() {
           {...fadeUp(0)}
           className="inline-flex items-center gap-2 border border-[#00B4D8]/30 bg-[#00B4D8]/5 text-[#90E0EF] text-[10px] font-bold tracking-[0.1em] uppercase px-4 py-2 rounded-full mb-6"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00B4D8] flex-shrink-0 animate-pulse" />
           Si estás listo/a para dejar las excusas y seguir un plan real, este es tu lugar
         </motion.div>
 
